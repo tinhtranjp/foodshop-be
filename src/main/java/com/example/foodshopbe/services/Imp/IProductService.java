@@ -38,4 +38,6 @@ public interface IProductService {
             int productId,
             ProductImageDTO productImageDTO
     ) throws Exception;
+
+    boolean existsByName(String name);
 }

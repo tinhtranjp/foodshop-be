@@ -2,14 +2,19 @@ package com.example.foodshopbe.controllers;
 
 import com.example.foodshopbe.dtos.ProductDTO;
 import com.example.foodshopbe.dtos.ProductImageDTO;
+import com.example.foodshopbe.dtos.ProductsInforDTO;
 import com.example.foodshopbe.exceptions.InvalidParamException;
 import com.example.foodshopbe.models.Product;
 import com.example.foodshopbe.models.ProductImage;
+import com.example.foodshopbe.models.ProductInfor;
+import com.example.foodshopbe.repositories.ProductInforRepository;
 import com.example.foodshopbe.respons.PaginationInfo;
 import com.example.foodshopbe.respons.ProductListResponse;
 import com.example.foodshopbe.respons.ProductResponse;
+import com.example.foodshopbe.services.Imp.IProductInforService;
 import com.example.foodshopbe.services.Imp.IProductService;
 import com.example.foodshopbe.services.Imp.ImageServiceImp;
+import com.github.javafaker.Faker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
@@ -36,6 +41,9 @@ import java.util.List;
 public class ProductController {
     private final IProductService iProductService;
     private final ImageServiceImp imageServiceImp;
+    private final IProductInforService iProductInforService;
+    private  final  ProductInforRepository productInforRepository;
+
 
     @PostMapping("")
     public ResponseEntity<?> createProduct(
@@ -172,4 +180,61 @@ public class ProductController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @PostMapping("/generateFakeProducts")
+    public ResponseEntity<String> generateFakeFroducts() {
+        Faker faker = new Faker();
+
+        for (int i = 0; i < 200; i++) {
+            String productName = faker.commerce().productName();
+            Float lisPrice = (float)faker.number().numberBetween(500, 50000);
+            if(iProductService.existsByName(productName)) {
+                continue;
+            }
+            ProductsInforDTO productsInforDTO = ProductsInforDTO
+                    .builder()
+                    .name(productName)
+                    .amount("500g")
+                    .expiratetionDate("製造日から６ヶ月")
+                    .storageMethod("直射日光・高温多湿を避けて冷暗所保管")
+                    .material("大豆、米、食塩、酒精")
+                    .saferyInstruc("開封後はラップなどを味噌に密着させ、空気を遮断し冷蔵庫にて保管してください。冷凍庫に保管していただくと変化を抑えられます。\n" +
+                            "長期間、お使いにならない場合は冷凍庫で保管。（生みそは凍りません）\n" +
+                            "商品の性質上、時間の経過と共に味噌の色が褐変し、色が濃くなることがありますが、品質に問題ございません。")
+                    .build();
+
+            try {
+                iProductInforService.createProductInfor(productsInforDTO);
+
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            ProductInfor proInfor = productInforRepository.findByName(productName);
+                int productInforId = proInfor.getId();
+
+            ProductDTO productDTO = ProductDTO
+                    .builder()
+                    .categoryId((int)faker.number().numberBetween(1, 16))
+                    .listedPrice(lisPrice)
+                    .description(faker.lorem().sentence())
+                    .discount((float) 0)
+                    .price(lisPrice)
+                    .isFreeShip(false)
+                    .thumbnail("")
+                    .quantity((int)faker.number().numberBetween(0,100))
+                    .isPromotion(false)
+                    .productInforId(productInforId)
+                    .name(productName)
+                    .build();
+
+                try {
+                    iProductService.createProduct(productDTO);
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
+        }
+
+        return  ResponseEntity.ok("Fake Products created successfully");
+    }
+
 }
