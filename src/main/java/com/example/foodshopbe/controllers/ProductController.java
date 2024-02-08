@@ -130,17 +130,30 @@ public class ProductController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int limit
     ) {
-        PageRequest pageRequest = PageRequest.of(
-                page, limit,
-                Sort.by("id").descending());
+
+        Sort sort;
+
+        if ("desc".equals(sortByDateParam)) {
+            sort = Sort.by("updatedAt").descending();
+        } else if ("asc".equals(sortByPriceParam)) {
+            sort = Sort.by("price").ascending();
+        } else if ("desc".equals(sortByPriceParam)) {
+            sort = Sort.by("price").descending();
+        }  else {
+            sort = Sort.by("id").descending();
+        }
+
+        PageRequest pageRequest = PageRequest.of(page, limit, sort);
+
+//        PageRequest pageRequest = PageRequest.of(
+//                page, limit,
+//                Sort.by("id").descending());
         Page<ProductResponse> productPage = iProductService
                 .getAllProducts(
                         keyword,
                         categoryId,
                         minPrice,
                         maxPrice,
-                        sortByPriceParam,
-                        sortByDateParam,
                         isFreeShip,
                         isPromotion,
                         pageRequest);

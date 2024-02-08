@@ -75,8 +75,6 @@ public class ProductService implements IProductService {
                                                 Long categoryId,
                                                 Double minPrice,
                                                 Double maxPrice,
-                                                String sortByPriceParam,
-                                                String sortByDateParam,
                                                 Boolean isFreeShip,
                                                 Boolean isPromotion,
                                                 PageRequest pageRequest) {
@@ -86,8 +84,6 @@ public class ProductService implements IProductService {
                 keyword,
                 minPrice,
                 maxPrice,
-                sortByPriceParam,
-                sortByDateParam,
                 isPromotion,
                 isFreeShip,
                 pageRequest);

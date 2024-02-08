@@ -17,8 +17,6 @@ public interface IProductService {
                                                 Long categoryId,
                                                 Double minPrice,
                                                 Double maxPrice,
-                                                String sortByPriceParam,
-                                                String sortByDateParam,
                                                 Boolean isFreeShip,
                                                 Boolean isPromotion,
                                                 PageRequest pageRequest);
