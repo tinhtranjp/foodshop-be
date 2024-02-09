@@ -7,7 +7,6 @@ import com.example.foodshopbe.models.ProductImage;
 import com.example.foodshopbe.respons.ProductResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -17,8 +16,6 @@ public interface IProductService {
                                                 Long categoryId,
                                                 Double minPrice,
                                                 Double maxPrice,
-                                                String sortByPriceParam,
-                                                String sortByDateParam,
                                                 Boolean isFreeShip,
                                                 Boolean isPromotion,
                                                 PageRequest pageRequest);

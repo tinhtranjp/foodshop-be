@@ -10,7 +10,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -27,9 +29,12 @@ public class OrderDTO {
     @Size(min=5, max = 20, message = "phone number must be between 5 and 20 characters")
     @JsonProperty("phone_number")
     private String phoneNumber;
+
     private String note;
+
     @JsonProperty("total_money")
     @Min(value = 0, message = "Total money must be >= 0")
+
     private Float totalMoney;
 
     @JsonProperty("shipping_method")
@@ -39,7 +44,7 @@ public class OrderDTO {
     private String shippingAddress;
 
     @JsonProperty("shipping_date")
-    private Date shippingDate;
+    private LocalDate shippingDate;
 
     @JsonProperty("tracking_number")
     private String trackingNumber;
@@ -51,5 +56,8 @@ public class OrderDTO {
 
     @NotNull(message = "userId is required")
     @JsonProperty("user_id")
-    private Integer userId;
+    private int userId;
+
+    @JsonProperty("cart_items")
+    private List<CartItemDTO> cartItems;
 }

@@ -21,11 +21,7 @@ public class AddressService implements IAddressService {
     @Override
     public Address createAddress(AddressDTO addressDTO) throws InvalidParamException {
         User existingUser = userRepository
-                .findById(addressDTO.getUserId())
-                .orElseThrow(
-                        ()-> new InvalidParameterException(
-                                "khong tim thay user voi id: " + addressDTO.getUserId())
-                );
+                .findById(addressDTO.getUserId());
         Address newAddress = Address
                 .builder()
                 .address1(addressDTO.getAddress1())
@@ -53,11 +49,8 @@ public class AddressService implements IAddressService {
     @Override
     public Address updateAddress(int addressId, AddressDTO addressDTO) throws Exception {
         User existingUser = userRepository
-                .findById(addressDTO.getUserId())
-                .orElseThrow(
-                        ()-> new InvalidParameterException(
-                                "khong tim thay user voi id: " + addressDTO.getUserId())
-                );
+                .findById(addressDTO.getUserId());
+
         Address existingAddress = getAddressById(addressId);
         if(existingAddress != null) {
             existingAddress.setPrefecture(addressDTO.getPrefecture());

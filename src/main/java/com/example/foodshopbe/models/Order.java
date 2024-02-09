@@ -1,11 +1,13 @@
 package com.example.foodshopbe.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -46,7 +48,7 @@ public class Order {
     private String shippingAddress;
 
     @Column(name = "shipping_date")
-    private String shippingDate;
+    private LocalDate shippingDate;
 
     @Column(name = "tracking_number", length = 100)
     private String trackingNumber;
@@ -64,4 +66,8 @@ public class Order {
 //
 //    @OneToMany(mappedBy = "order")
 //    List<OrderDetail> orderDetailList;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<OrderDetail> orderDetails;
 }

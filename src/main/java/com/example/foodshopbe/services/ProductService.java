@@ -43,15 +43,15 @@ public class ProductService implements IProductService {
         Category existingCategory = categoryRepository
                 .findById(productDTO
                         .getCategoryId())
-                        .orElseThrow(
-                                ()-> new DataNotFoundException("Khong tim thay category voi id : "+ productDTO.getCategoryId())
-                        );
+                .orElseThrow(
+                        ()-> new DataNotFoundException("Khong tim thay category voi id : "+ productDTO.getCategoryId())
+                );
         ProductInfor existingProductInfor = productInforRepository
                 .findById(productDTO
                         .getProductInforId())
-                        .orElseThrow(
-                                ()-> new DataNotFoundException(("Khong tim thay product infor voi id: " + productDTO.getProductInforId()))
-                        );
+                .orElseThrow(
+                        ()-> new DataNotFoundException(("Khong tim thay product infor voi id: " + productDTO.getProductInforId()))
+                );
 
         Product newProduct = Product
                 .builder()
@@ -75,8 +75,6 @@ public class ProductService implements IProductService {
                                                 Long categoryId,
                                                 Double minPrice,
                                                 Double maxPrice,
-                                                String sortByPriceParam,
-                                                String sortByDateParam,
                                                 Boolean isFreeShip,
                                                 Boolean isPromotion,
                                                 PageRequest pageRequest) {
@@ -86,8 +84,6 @@ public class ProductService implements IProductService {
                 keyword,
                 minPrice,
                 maxPrice,
-                sortByPriceParam,
-                sortByDateParam,
                 isPromotion,
                 isFreeShip,
                 pageRequest);
@@ -159,7 +155,7 @@ public class ProductService implements IProductService {
 
     @Override
     public void deleteProduct(int id) {
-            productRepository.deleteById(id);
+        productRepository.deleteById(id);
     }
 
     @Transactional

@@ -126,21 +126,32 @@ public class ProductController {
             @RequestParam(defaultValue = "asc", name = "sort_by_date") String sortByDateParam,
             @RequestParam(defaultValue = "0", name = "is_promotion") Boolean isPromotion,
             @RequestParam(defaultValue = "0", name = "is_freeship") Boolean isFreeShip,
-
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int limit
     ) {
-        PageRequest pageRequest = PageRequest.of(
-                page, limit,
-                Sort.by("id").descending());
+
+        Sort sort;
+
+        if ("desc".equals(sortByDateParam)) {
+            sort = Sort.by("updatedAt").descending();
+        } else if ("asc".equals(sortByPriceParam)) {
+            sort = Sort.by("price").ascending();
+        } else if ("desc".equals(sortByPriceParam)) {
+            sort = Sort.by("price").descending();
+        }  else {
+            sort = Sort.by("id").descending();
+        }
+
+        PageRequest pageRequest = PageRequest.of(page, limit, sort);
+//        PageRequest pageRequest = PageRequest.of(
+//                page, limit,
+//                Sort.by("id").descending());
         Page<ProductResponse> productPage = iProductService
                 .getAllProducts(
                         keyword,
                         categoryId,
                         minPrice,
                         maxPrice,
-                        sortByPriceParam,
-                        sortByDateParam,
                         isFreeShip,
                         isPromotion,
                         pageRequest);
@@ -161,10 +172,10 @@ public class ProductController {
     public ResponseEntity<?> getProductById (
             @PathVariable("id") int productId
     ) {
-           try {
-               Product product = iProductService.getProductById(productId);
-               return ResponseEntity.ok(product);
-           }catch (Exception e){
+        try {
+            Product product = iProductService.getProductById(productId);
+            return ResponseEntity.ok(product);
+        }catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -210,7 +221,7 @@ public class ProductController {
                 throw new RuntimeException(e);
             }
             ProductInfor proInfor = productInforRepository.findByName(productName);
-                int productInforId = proInfor.getId();
+            int productInforId = proInfor.getId();
 
             ProductDTO productDTO = ProductDTO
                     .builder()
@@ -227,11 +238,11 @@ public class ProductController {
                     .name(productName)
                     .build();
 
-                try {
-                    iProductService.createProduct(productDTO);
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
-                }
+            try {
+                iProductService.createProduct(productDTO);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
         }
 
         return  ResponseEntity.ok("Fake Products created successfully");
