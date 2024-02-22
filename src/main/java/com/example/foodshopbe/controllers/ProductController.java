@@ -143,13 +143,7 @@ public class ProductController {
         }
 
         PageRequest pageRequest = PageRequest.of(page, limit, sort);
-<<<<<<< HEAD
-=======
 
->>>>>>> f691c152034aadba59dcbd990f045c79acc3dbe6
-//        PageRequest pageRequest = PageRequest.of(
-//                page, limit,
-//                Sort.by("id").descending());
         Page<ProductResponse> productPage = iProductService
                 .getAllProducts(
                         keyword,
