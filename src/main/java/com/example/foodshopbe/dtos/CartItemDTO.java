@@ -10,6 +10,7 @@ import lombok.*;
 @Getter
 @Setter
 public class CartItemDTO {
+
     @JsonProperty("product_id")
     private int productId;
 

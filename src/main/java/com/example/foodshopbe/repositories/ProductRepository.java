@@ -23,7 +23,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             "AND (:maxPrice IS NULL OR (:maxPrice = 0 AND p.price > 0) OR p.price <= :maxPrice) " +
             "AND (:isPromotion IS NULL OR COALESCE(p.isPromotion, FALSE) = :isPromotion) " +
             "AND (:isFreeShip IS NULL OR COALESCE(p.isFreeShip, FALSE) = :isFreeShip)")
-
     Page<Product> searchProducts(
             @Param("categoryId") Long categoryId,
             @Param("keyword") String keyword,
@@ -32,6 +31,4 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             @Param("isPromotion") Boolean isPromotion,
             @Param("isFreeShip") Boolean isFreeShip,
             Pageable pageable);
-
-
 }

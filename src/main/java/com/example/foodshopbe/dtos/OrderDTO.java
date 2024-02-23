@@ -28,9 +28,12 @@ public class OrderDTO {
     @Size(min=5, max = 20, message = "phone number must be between 5 and 20 characters")
     @JsonProperty("phone_number")
     private String phoneNumber;
+
     private String note;
+
     @JsonProperty("total_money")
     @Min(value = 0, message = "Total money must be >= 0")
+
     private Float totalMoney;
 
     @JsonProperty("shipping_method")
