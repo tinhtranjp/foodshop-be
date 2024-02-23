@@ -1,5 +1,6 @@
 package com.example.foodshopbe.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,5 +27,10 @@ public class OrderDetail {
 
     @ManyToOne
     @JoinColumn(name = "order_id")
+    @JsonBackReference
     Order order;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 }

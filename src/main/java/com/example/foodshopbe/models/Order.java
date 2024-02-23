@@ -1,11 +1,15 @@
 package com.example.foodshopbe.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import jakarta.persistence.PrePersist;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -31,7 +35,10 @@ public class Order {
 
     @Column(length = 200)
     private String note;
+
+
     @Column(name="order_date")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime orderDate;
 
     private String status;
@@ -46,7 +53,8 @@ public class Order {
     private String shippingAddress;
 
     @Column(name = "shipping_date")
-    private String shippingDate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDateTime shippingDate;
 
     @Column(name = "tracking_number", length = 100)
     private String trackingNumber;
@@ -61,7 +69,18 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "user_id")
     User user;
+
+    @PrePersist
+    protected void onCreate() {
+        orderDate = LocalDateTime.now();
+    }
+
+
 //
 //    @OneToMany(mappedBy = "order")
 //    List<OrderDetail> orderDetailList;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<OrderDetail> orderDetails;
 }

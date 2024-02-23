@@ -1,5 +1,6 @@
 package com.example.foodshopbe.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -8,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -39,7 +41,8 @@ public class User extends  BaseEntity implements UserDetails {
     private Boolean gender;
 
     @Column(name = "date_of_birth")
-    private Date dateOfBirth;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dateOfBirth;
 
     @Column(name = "email_accept")
     private Boolean emailAccept;

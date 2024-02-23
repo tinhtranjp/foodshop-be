@@ -2,10 +2,12 @@ package com.example.foodshopbe.respons;
 
 import com.example.foodshopbe.models.Address;
 import com.example.foodshopbe.models.Role;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -37,7 +39,8 @@ public class UserResponse {
     private Boolean gender;
 
     @JsonProperty("date_of_birth")
-    private Date dateOfBirth;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dateOfBirth;
 
     @JsonProperty("login_id")
     private String loginId;
