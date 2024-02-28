@@ -30,6 +30,16 @@ public class UserController {
     private final IUserService iUserService;
     private final UserRepository userRepository;
     private  final AddressRepository addressRepository;
+
+    @GetMapping("")
+    public ResponseEntity<?> getAllUser() {
+        try{
+            List<User> user = iUserService.getAllUser();
+            return ResponseEntity.ok(user);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Loi register, Err: "+ e.getMessage());
+        }
+    }
     @PostMapping("/register")
     public ResponseEntity<?> createUser(@Valid @RequestBody UserDTO userDTO, BindingResult result) {
         try{

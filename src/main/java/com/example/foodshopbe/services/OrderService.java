@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -50,12 +49,14 @@ public class OrderService implements IOrderService {
                 .orderDate(LocalDate.now().atStartOfDay())
                 .build();
 
-        LocalDateTime shippingDateTime = orderDTO.getShippingDate() == null
-                ? LocalDateTime.now() : orderDTO.getShippingDate().atStartOfDay();
-        if (shippingDateTime.isBefore(LocalDateTime.now())) {
+        LocalDate shippingDate = orderDTO.getShippingDate() == null
+                ? LocalDate.now() : orderDTO.getShippingDate();
+        if (shippingDate.isBefore(LocalDate.now())) {
             throw new DataNotFoundException("Date must be at least today !");
         }
-        order.setShippingDate(shippingDateTime);
+
+
+        order.setShippingDate(shippingDate);
         orderRepository.save(order);
 
         List<OrderDetail> orderDetails = new ArrayList<>();
@@ -82,5 +83,10 @@ public class OrderService implements IOrderService {
         orderDetailRepository.saveAll(orderDetails);
         order.setOrderDetails(orderDetails);
         return order;
+    }
+
+    @Override
+    public List<Order> getFullOrders() {
+        return orderRepository.findAll();
     }
 }

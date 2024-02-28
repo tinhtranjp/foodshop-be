@@ -34,6 +34,7 @@ public class ProductResponse extends BaseResponse{
     private int productInforId;
 
     public static ProductResponse fromProduct(Product product) {
+
         ProductResponse productResponse = ProductResponse
                 .builder()
                 .discount(product.getDiscount())

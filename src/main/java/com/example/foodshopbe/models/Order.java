@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import jakarta.persistence.PrePersist;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -52,7 +54,7 @@ public class Order {
 
     @Column(name = "shipping_date")
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDateTime shippingDate;
+    private LocalDate shippingDate;
 
     @Column(name = "tracking_number", length = 100)
     private String trackingNumber;
